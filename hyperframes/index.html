@@ -1,0 +1,48 @@
+<!doctype html>
+<!--
+  Composition HyperFrames: slideshow dọc 1080x1920, 10 giây.
+  Mỗi phần tử có data-start / data-duration / data-track-index (giây);
+  hoạt ảnh do một GSAP timeline (paused) điều khiển, đăng ký vào window.__timelines
+  để HyperFrames tua (seek) từng khung hình khi render.
+  Ảnh lấy từ ./photos (symlink tới ../public/photos).
+-->
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    html, body { margin: 0; background: #000; }
+    #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+    .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+    #title {
+      position: absolute; top: 230px; width: 100%; margin: 0; text-align: center;
+      color: #fff; font: 700 84px "DejaVu Sans", sans-serif; text-shadow: 0 4px 16px rgba(0,0,0,.6); opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1920">
+    <img id="p1" class="photo clip" src="photos/01.jpg" data-start="0" data-duration="4" data-track-index="0" />
+    <img id="p2" class="photo clip" src="photos/02.jpg" data-start="3" data-duration="4" data-track-index="1" />
+    <img id="p3" class="photo clip" src="photos/03.jpg" data-start="6" data-duration="4" data-track-index="2" />
+    <h1 id="title" class="clip" data-start="0.3" data-duration="4" data-track-index="3">Kỷ niệm</h1>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Ken Burns + crossfade 1s giữa các ảnh.
+    tl.set('#p1', { opacity: 1 }, 0)
+      .fromTo('#p1', { scale: 1 }, { scale: 1.12, duration: 4, ease: 'none' }, 0)
+      .fromTo('#p2', { opacity: 0, scale: 1 }, { opacity: 1, duration: 1, ease: 'none' }, 3)
+      .to('#p2', { scale: 1.12, duration: 4, ease: 'none' }, 3)
+      .fromTo('#p3', { opacity: 0, scale: 1 }, { opacity: 1, duration: 1, ease: 'none' }, 6)
+      .to('#p3', { scale: 1.12, duration: 4, ease: 'none' }, 6)
+      // Tiêu đề trượt lên rồi mờ đi.
+      .fromTo('#title', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, 0.3)
+      .to('#title', { opacity: 0, duration: 0.8 }, 3.2)
+      // Mờ đen cuối video.
+      .to('#root', { opacity: 0, duration: 1 }, 9);
+    window.__timelines = window.__timelines || {};
+    window.__timelines['main'] = tl;
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "yuki-video-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bộ công cụ tạo, chỉnh sửa, làm hoạt ảnh và render video: Remotion + HyperFrames + FFmpeg",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "check": "bash scripts/check-env.sh",
+    "remotion:studio": "remotion studio remotion/src/index.ts",
+    "remotion:render": "remotion render remotion/src/index.ts PhotoSlideshow out/slideshow-remotion.mp4",
+    "remotion:still": "remotion still remotion/src/index.ts PhotoSlideshow out/remotion-still.png --frame=45",
+    "hf:preview": "cd hyperframes && hyperframes preview",
+    "hf:lint": "cd hyperframes && hyperframes lint",
+    "hf:render": "cd hyperframes && hyperframes render --output ../out/slideshow-hyperframes.mp4",
+    "ffmpeg:slideshow": "bash scripts/ffmpeg-slideshow.sh",
+    "test:html-render": "node scripts/html-to-video-test.mjs"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "@remotion/transitions": "^4.0.0",
+    "gsap": "^3.12.0",
+    "hyperframes": "latest",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.4.0"
+  }
+}

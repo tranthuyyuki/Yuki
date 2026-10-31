@@ -1,0 +1,7 @@
+node_modules/
+out/
+.remotion/
+*.log
+# Ảnh cá nhân: không đẩy lên GitHub (chỉ giữ ở máy). Bỏ dòng này nếu muốn lưu kèm repo.
+public/photos/*
+!public/photos/.gitkeep
